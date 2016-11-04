@@ -95,7 +95,52 @@
 </head>
 <body style="padding: 0px; text-size-adjust: 100%; margin: 0px; width: 100% !important;" marginheight="0" marginwidth="0">
 <header>
-  
+  <div id="content">
+            {% block content %}{% end %}
+		</div>
+		<div id="fb-root"></div>
+		<script type="text/javascript" language="javascript">
+         function reload()
+  {
+    document.location.reload(true);
+    return true;
+  }
+  function notif()
+  {
+    FB.ui({method: 'apprequests',
+      message: 'Swim Hard challenge',
+      to: '246038535785030'
+    }, function(response){
+      console.log(response);
+    });
+  }
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId: '{{fb_application_id}}',
+					status: true, // check login status
+					cookie: true, // enable cookies to allow the server to access the session
+					xfbml: true  // parse XFBML
+				});
+				FB.getLoginStatus(function(response) {
+					if (response.authResponse) {
+                    FB.api('/me', function(response) {
+                    console.log(response);
+                    welcomeBlock.innerHTML =  'Your game id: fb' + response.id +'</font>'
+
+                    flashvars.fbname = response.name;
+                    });
+						runOnFacebookAvailable()
+					} else {
+						FB.Event.subscribe('auth.login', runOnFacebookAvailable);
+					}
+				});
+			};
+			(function() {
+				var e = document.createElement('script');
+				e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+				e.async = true;
+				document.getElementById('fb-root').appendChild(e);
+			} ());
 </header>
 <div class="page-content">
   <div class="container">
